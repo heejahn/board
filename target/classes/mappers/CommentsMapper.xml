@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.CommentsMapper">
+
+    <select id="selectAllComments" resultType="com.example.board.domain.dto.CommentsDto">
+SELECT
+       b.cid,
+       b.contents as commentContents,
+       b.reg_dt as commentRegDt
+  FROM comments b
+ WHERE b.bid = (
+				SELECT
+				       a.bid
+			      FROM board a
+			     WHERE title = #{title}
+			   )
+ ORDER BY b.cid DESC;
+    </select>
+
+    <delete id="deleteCurrentPageComments">
+DELETE
+  FROM comments
+ WHERE bid = #{bid};
+    </delete>
+
+</mapper>
