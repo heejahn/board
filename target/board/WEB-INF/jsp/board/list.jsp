@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
     <title>board main page</title>
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script  src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.5.1.min.js"></script>
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 </head>
@@ -35,15 +35,14 @@
         </c:forEach>
         </tbody>
     </table>
-
+<div>
     <button type="button" id="btnWrite">작성하기</button>
+</div>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-           $("#btnWrite").on("click", function(){
-               self.location = "/board/write"
-           })
-        })
-    </script>
+<script type="text/javascript">
+    document.getElementById('btnWrite').onclick = function() {
+        location.href = "/board/write";
+    };
+</script>
 </body>
 </html>

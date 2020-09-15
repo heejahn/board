@@ -4,14 +4,24 @@ import java.util.Date;
 
 public class CommentsDto {
 
+    private Long bid;
     private Long cid;
-    private String commentContents;
+    private String contents;
     private Date commentRegDt;
 
-    public CommentsDto(Long cid, String commentContents, Date commentRegDt) {
+    public CommentsDto(Long bid, Long cid, String contents, Date commentRegDt) {
+        this.bid = bid;
         this.cid = cid;
-        this.commentContents = commentContents;
+        this.contents = contents;
         this.commentRegDt = commentRegDt;
+    }
+
+    public Long getBid() {
+        return bid;
+    }
+
+    public void setBid(Long bid) {
+        this.bid = bid;
     }
 
     public Long getCid() {
@@ -22,12 +32,12 @@ public class CommentsDto {
         this.cid = cid;
     }
 
-    public String getCommentContents() {
-        return commentContents;
+    public String getContents() {
+        return contents;
     }
 
-    public void setCommentContents(String commentContents) {
-        this.commentContents = commentContents;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public Date getCommentRegDt() {
@@ -41,8 +51,9 @@ public class CommentsDto {
     @Override
     public String toString() {
         return "CommentsDto{" +
-                "cid=" + cid +
-                ", commentContents='" + commentContents + '\'' +
+                "bid=" + bid +
+                ", cid=" + cid +
+                ", contents='" + contents + '\'' +
                 ", commentRegDt=" + commentRegDt +
                 '}';
     }

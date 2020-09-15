@@ -6,8 +6,12 @@ import com.example.board.domain.service.BoardService;
 import com.example.board.domain.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,11 +41,11 @@ public class BoardController {
         return modelAndView;
     }
 
+    @Transactional
     @GetMapping("page")
     public String page(@RequestParam("title") String title, Model model) {
 
-        // to do
-        // 조회 수 증가
+        boardService.updateNumberOfHits(title);
 
         List<CommentsDto> commentsDtoList = commentsService.selectAllComments(title);
 
@@ -54,16 +58,33 @@ public class BoardController {
        return "/board/page";
     }
 
+    @RequestMapping("addComment")
+    public String addComment(CommentsDto commentsDto, RedirectAttributes rttr) {
+
+        commentsService.addNewComment(commentsDto);
+        rttr.addFlashAttribute("msg", "added");
+
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("deleteComment")
+    public String deleteComment(@RequestParam("cid") Long cid) {
+
+        commentsService.deleteCurrentComment(cid);
+
+        return "redirect:/board/list";
+    }
+
+
     @GetMapping("write")
     public void write() {
 
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public String register(BoardDto boardDto, RedirectAttributes rttr) {
+    public String register(BoardDto boardDto) {
 
         boardService.registerNewPage(boardDto);
-        rttr.addFlashAttribute("msg", "success");
 
         return "redirect:/board/list";
     }
@@ -87,10 +108,6 @@ public class BoardController {
 
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public String delete(@RequestParam("bid") Long bid) {
-
-        // to do
-        // 1. 관련 댓글 삭제(reference)
-        // 2. 본문 삭제
 
         commentsService.deleteCurrentPageComments(bid);
         boardService.deleteCurrentPage(bid);

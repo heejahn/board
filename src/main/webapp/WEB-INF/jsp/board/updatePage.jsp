@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
     <title>board main page</title>
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script  src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.5.1.min.js"></script>
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 </head>
@@ -26,11 +26,9 @@
         <button type="button" id="btnReset">리셋</button>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('#btnReset').on("click", function() {
-                self.location = "/board/write";
-            })
-        })
+        document.getElementById('btnReset').onclick = function() {
+            location.reload();
+        }
     </script>
 
 </body>

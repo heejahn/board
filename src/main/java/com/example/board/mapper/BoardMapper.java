@@ -14,6 +14,8 @@ public interface BoardMapper {
 
     void updateCurrentPage(BoardDto boardDto);
 
+    void updateNumberOfHits(String title);
+
     void deleteCurrentPage(Long bid);
 
 }

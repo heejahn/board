@@ -17,6 +17,9 @@ public class CommentsService {
 
     public List<CommentsDto> selectAllComments(String title) { return commentsMapper.selectAllComments(title); }
 
+    public void addNewComment(CommentsDto commentsDto) { commentsMapper.addNewComment(commentsDto); }
+
     public void deleteCurrentPageComments(Long bid) { commentsMapper.deleteCurrentPageComments(bid); }
 
+    public void deleteCurrentComment(Long cid) { commentsMapper.deleteCurrentComment(cid); }
 }

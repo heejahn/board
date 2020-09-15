@@ -14,6 +14,7 @@ SELECT
  ORDER BY a.bid DESC
     </select>
 
+
     <select id="selectChosenPage" resultType="com.example.board.domain.dto.BoardDto">
 SELECT
 	   a.bid,
@@ -25,19 +26,21 @@ SELECT
  WHERE a.title = #{title}
     </select>
 
+
     <insert id="registerNewPage">
 INSERT
   INTO board(
-       title,
-       contents,
-       reg_dt,
-       read_count)
+             title,
+             contents,
+             reg_dt,
+             read_count)
 VALUES (
         #{title},
         #{contents},
         now(),
         0);
     </insert>
+
 
     <update id="updateCurrentPage">
 UPDATE
@@ -46,6 +49,15 @@ UPDATE
        a.reg_dt = NOW()
  WHERE a.title = #{title};
     </update>
+
+
+    <update id="updateNumberOfHits">
+UPDATE
+	   board a
+   SET a.read_count = read_count + 1
+ WHERE title = #{title};
+    </update>
+
 
     <delete id="deleteCurrentPage">
 DELETE

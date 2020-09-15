@@ -8,6 +8,10 @@ public interface CommentsMapper {
 
     List<CommentsDto> selectAllComments(String title);
 
+    void addNewComment(CommentsDto commentsDto);
+
     void deleteCurrentPageComments(Long bid);
+
+    void deleteCurrentComment(Long cid);
 
 }

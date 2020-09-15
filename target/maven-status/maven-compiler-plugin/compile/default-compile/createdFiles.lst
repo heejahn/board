@@ -1,0 +1,7 @@
+com\example\board\domain\dto\CommentsDto.class
+com\example\board\controller\BoardController.class
+com\example\board\domain\service\BoardService.class
+com\example\board\domain\dto\BoardDto.class
+com\example\board\domain\service\CommentsService.class
+com\example\board\mapper\CommentsMapper.class
+com\example\board\mapper\BoardMapper.class

@@ -27,6 +27,8 @@ public class BoardService {
 
     public void updateCurrentPage(BoardDto boardDto) { boardMapper.updateCurrentPage(boardDto);}
 
+    public void updateNumberOfHits(String title) { boardMapper.updateNumberOfHits(title); }
+
     public void deleteCurrentPage(Long bid) { boardMapper.deleteCurrentPage(bid); }
 
 }
