@@ -88,6 +88,7 @@
         <form role="form" action="${pageContext.request.contextPath}/board/addComment" method="post">
             <input type="hidden" name="bid" id="bid" value="${boardPage.bid}" />
             <div>
+                <label for="contents"></label>
                 <input type="text" id="contents" name="contents" size="30" placeholder="댓글을 작성하세요." />
                 <button type="submit" class="btn btn-outline-primary btn-sm" id="addComment" name="addComment">댓글 추가</button>
             </div>
