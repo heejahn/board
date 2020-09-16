@@ -15,7 +15,7 @@ public class CommentsService {
     @Autowired
     public CommentsService(CommentsMapper commentsMapper) { this.commentsMapper = commentsMapper; }
 
-    public List<CommentsDto> selectAllComments(String title) { return commentsMapper.selectAllComments(title); }
+    public List<CommentsDto> selectAllComments(Long bid) { return commentsMapper.selectAllComments(bid); }
 
     public void addNewComment(CommentsDto commentsDto) { commentsMapper.addNewComment(commentsDto); }
 

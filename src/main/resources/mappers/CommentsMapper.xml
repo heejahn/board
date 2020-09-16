@@ -3,46 +3,39 @@
 
 <mapper namespace="com.example.board.mapper.CommentsMapper">
 
-    <select id="selectAllComments" resultType="java.util.HashMap">
-<!--    <select id="selectAllComments" resultType="com.example.board.domain.dto.CommentsDto">-->
+    <select id="selectAllComments" parameterType="long" resultType="com.example.board.domain.dto.CommentsDto">
 SELECT
-       b.cid,
-       b.contents,
-       b.reg_dt as commentRegDt
-  FROM comments b
- WHERE b.bid = (
-				SELECT
-				       a.bid
-			      FROM board a
-			     WHERE title = #{title}
-			   )
- ORDER BY b.cid DESC;
+      b.cid,
+      b.contents,
+      b.reg_dt as commentRegDt
+ FROM board a, comments b
+WHERE a.bid = b.bid
+  AND a.bid = #{value}
+ORDER BY b.cid DESC
     </select>
 
-    
     <insert id="addNewComment">
 INSERT
   INTO comments(
-                bid,
-                contents,
-                reg_dt)
+        bid,
+        contents,
+        reg_dt)
 VALUES (
  		#{bid},
  		#{contents},
- 		NOW());
+ 		NOW())
     </insert>
-
 
     <delete id="deleteCurrentPageComments">
 DELETE
   FROM comments b
- WHERE b.bid = #{bid};
+ WHERE b.bid = #{bid}
     </delete>
-
 
     <delete id="deleteCurrentComment">
 DELETE
   FROM comments
- WHERE cid = ${cid};
+ WHERE cid = #{cid}
     </delete>
+
 </mapper>

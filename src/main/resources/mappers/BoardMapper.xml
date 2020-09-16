@@ -23,17 +23,17 @@ SELECT
        a.reg_dt as regDt,
        a.read_count as readCount
      FROM board a
- WHERE a.title = #{title}
+ WHERE a.bid = #{bid}
     </select>
 
 
     <insert id="registerNewPage">
 INSERT
   INTO board(
-             title,
-             contents,
-             reg_dt,
-             read_count)
+        title,
+        contents,
+        reg_dt,
+        read_count)
 VALUES (
         #{title},
         #{contents},
@@ -47,7 +47,7 @@ UPDATE
 	   board a
    SET a.contents = #{contents},
        a.reg_dt = NOW()
- WHERE a.title = #{title};
+ WHERE a.bid = #{bid};
     </update>
 
 
@@ -55,7 +55,7 @@ UPDATE
 UPDATE
 	   board a
    SET a.read_count = read_count + 1
- WHERE title = #{title};
+ WHERE a.bid = #{bid};
     </update>
 
 

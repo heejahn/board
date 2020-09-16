@@ -21,13 +21,13 @@ public class BoardService {
         return boardMapper.selectAllBoardList();
     }
 
-    public BoardDto selectChosenPage(String title) { return boardMapper.selectChosenPage(title); }
+    public BoardDto selectChosenPage(Long bid) { return boardMapper.selectChosenPage(bid); }
 
     public void registerNewPage(BoardDto boardDto) { boardMapper.registerNewPage(boardDto); }
 
     public void updateCurrentPage(BoardDto boardDto) { boardMapper.updateCurrentPage(boardDto);}
 
-    public void updateNumberOfHits(String title) { boardMapper.updateNumberOfHits(title); }
+    public void updateNumberOfHits(Long bid) { boardMapper.updateNumberOfHits(bid); }
 
     public void deleteCurrentPage(Long bid) { boardMapper.deleteCurrentPage(bid); }
 

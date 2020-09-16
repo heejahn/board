@@ -6,7 +6,6 @@ import com.example.board.domain.service.BoardService;
 import com.example.board.domain.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,19 +40,15 @@ public class BoardController {
         return modelAndView;
     }
 
-    @Transactional
     @GetMapping("page")
-    public String page(@RequestParam("title") String title, Model model) {
+    public String page(@RequestParam("bid") Long bid, Model model) {
 
-        boardService.updateNumberOfHits(title);
+        boardService.updateNumberOfHits(bid);
 
-        List<CommentsDto> commentsDtoList = commentsService.selectAllComments(title);
+        List<CommentsDto> commentsDtoList = commentsService.selectAllComments(bid);
 
-        model.addAttribute("boardPage", boardService.selectChosenPage(title));
+        model.addAttribute("boardPage", boardService.selectChosenPage(bid));
         model.addAttribute("commentPage", commentsDtoList);
-
-        // to do
-        // 댓글 입력 폼 및 삭제 추가
 
        return "/board/page";
     }
@@ -90,9 +85,9 @@ public class BoardController {
     }
 
     @GetMapping("updatePage")
-    public String updatePage(@RequestParam("title") String title, Model model) {
+    public String updatePage(@RequestParam("bid") Long bid, Model model) {
 
-        model.addAttribute("updatePage", boardService.selectChosenPage(title));
+        model.addAttribute("updatePage", boardService.selectChosenPage(bid));
 
         return "/board/updatePage";
     }

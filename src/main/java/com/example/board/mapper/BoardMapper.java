@@ -8,13 +8,13 @@ public interface BoardMapper {
 
     List<BoardDto> selectAllBoardList();
 
-    BoardDto selectChosenPage(String title);
+    BoardDto selectChosenPage(Long bid);
 
     void registerNewPage(BoardDto boardDto);
 
     void updateCurrentPage(BoardDto boardDto);
 
-    void updateNumberOfHits(String title);
+    void updateNumberOfHits(Long bid);
 
     void deleteCurrentPage(Long bid);
 

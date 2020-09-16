@@ -9,13 +9,6 @@ public class CommentsDto {
     private String contents;
     private Date commentRegDt;
 
-    public CommentsDto(Long bid, Long cid, String contents, Date commentRegDt) {
-        this.bid = bid;
-        this.cid = cid;
-        this.contents = contents;
-        this.commentRegDt = commentRegDt;
-    }
-
     public Long getBid() {
         return bid;
     }

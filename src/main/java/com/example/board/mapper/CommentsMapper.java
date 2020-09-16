@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommentsMapper {
 
-    List<CommentsDto> selectAllComments(String title);
+    List<CommentsDto> selectAllComments(Long bid);
 
     void addNewComment(CommentsDto commentsDto);
 
