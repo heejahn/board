@@ -28,8 +28,8 @@ VALUES (
 
     <delete id="deleteCurrentPageComments">
 DELETE
-  FROM comments b
- WHERE b.bid = #{bid}
+  FROM comments
+ WHERE bid = #{bid}
     </delete>
 
     <delete id="deleteCurrentComment">
