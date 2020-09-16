@@ -17,14 +17,17 @@
         margin-left: 1em;
     }
 
-    .page {
+    #page {
         margin : 1em 0;
     }
     #commentTable {
         width: 70%;
-        margin-top: 2em;
+        margin-top: 5em;
     }
 
+    #addComment {
+        margin-left: 1em;
+    }
 </style>
 
 <body>
@@ -35,25 +38,29 @@
         <label class="label"><fmt:formatDate value="${boardPage.regDt}" pattern="yyyy.MM.dd" /></label>
     </div>
     <div>
-        <label>읽은 횟수</label>
+        <label>조회수</label>
         <label class="label">${boardPage.readCount}</label>
     </div>
-    <div class="page">
+    <div id="page">
         <form>
-            <div class="form-group row">
-                <label for="title" class="col-sm-2 col-form-label">제목</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly="readonly" id="title" name="title" value="${boardPage.title}">
+            <div class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="title">제목</label>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" readonly="readonly" id="title" name="title" value="${boardPage.title}">
+                    </div>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="boardContents" class="col-sm-2 col-form-label">내용</label>
-                <div class="col-sm-10">
-                    <textarea id='boardContents' name="boardContents" rows="3" cols="70" readonly="readonly">${boardPage.contents}</textarea>
+            <div class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="boardContents">내용</label>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <textarea id='boardContents' name="boardContents" rows="3" cols="70" readonly="readonly">${boardPage.contents}</textarea>
+                    </div>
                 </div>
             </div>
         </form>
-        <div class="text-center" id="threeButtons">
+        <div id="threeButtons">
             <button type="button" class="btn btn-outline-primary" id="btnUpdate">수정</button>
             <button type="button" class="btn btn-outline-primary" id="btnDelete">삭제</button>
             <button type="button" class="btn btn-outline-primary" id="btnPrevious">이전으로</button>
@@ -63,15 +70,12 @@
     <table class="table table-sm table-borderless" id="commentTable">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">댓글</th>
-            <th scope="col">작성일</th>
+            <th scope="col"><h5>댓글</h5></th>
         </tr>
         </thead>
         <tbody>
         <c:forEach var="page" items="${commentPage}">
             <tr>
-                <th scope="row">${page.cid}</th>
                 <td>${page.contents}</td>
                 <td><fmt:formatDate value="${page.commentRegDt}" pattern="yyyy.MM.dd" /></td>
                 <td><a href=# onclick="deleteComment(${page.cid})">삭제</a></td>
@@ -82,14 +86,11 @@
 
     <div>
         <form role="form" action="${pageContext.request.contextPath}/board/addComment" method="post">
-            <input type="hidden" name="bid" id="bid" value="${boardPage.bid}">
+            <input type="hidden" name="bid" id="bid" value="${boardPage.bid}" />
             <div>
-                <label for="contents">댓글 작성</label>
+                <input type="text" id="contents" name="contents" size="30" placeholder="댓글을 작성하세요." />
+                <button type="submit" class="btn btn-outline-primary btn-sm" id="addComment" name="addComment">댓글 추가</button>
             </div>
-            <div>
-                <input type="text" id="contents" name="contents" size="30" />
-            </div>
-            <button type="submit" class="btn btn-outline-warning" id="addComment" name="addComment">댓글 추가</button>
         </form>
     </div>
 </div>

@@ -11,26 +11,26 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
+
+<style>
+    #frm {
+        width: 70%;
+    }
+</style>
+
 <div class="container">
 <h3>글 수정</h3>
     <form role="form" action="${pageContext.request.contextPath}/board/update" method="post" id="frm" name="frm">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="" class="form-control" id="title" name="title" readonly="readonly" value="${updatePage.title}">
+                <input type="text" class="form-control" id="title" name="title" readonly="readonly" value="${updatePage.title}">
             </div>
         <div class="form-group">
             <label for="contents">내용</label>
             <textarea class="form-control" id="contents" name="contents" rows="3">${updatePage.contents}</textarea>
         </div>
-        <button type="submit" id="submit">제출</button>
+        <button class="btn btn-outline-primary" type="submit" id="submit">제출</button>
     </form>
-        <button type="button" id="btnReset">리셋</button>
 </div>
-<script type="text/javascript">
-    document.getElementById('btnReset').onclick = function() {
-        location.reload();
-    }
-</script>
-
 </body>
 </html>
