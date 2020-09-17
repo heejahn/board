@@ -12,6 +12,10 @@
 </head>
 
 <style>
+    body {
+        
+    }
+
     .label {
         color: #95999c;
         margin-left: 1em;
@@ -66,7 +70,7 @@
             <button type="button" class="btn btn-outline-primary" id="btnPrevious">이전으로</button>
         </div>
     </div>
-
+    <hr class="mb-4"/>
     <table class="table table-sm table-borderless" id="commentTable">
         <thead>
         <tr>
@@ -74,52 +78,106 @@
         </tr>
         </thead>
         <tbody>
+<%--        <div id="showCommentList"></div>--%>
         <c:forEach var="page" items="${commentPage}">
             <tr>
                 <td>${page.contents}</td>
                 <td><fmt:formatDate value="${page.commentRegDt}" pattern="yyyy.MM.dd" /></td>
-                <td><a href=# onclick="deleteComment(${page.cid})">삭제</a></td>
+                <td><a href=# id="deleteComment" onclick="deleteComment(${page.cid})">삭제</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 
     <div>
-        <form role="form" action="${pageContext.request.contextPath}/board/addComment" method="post">
+        <form role="form" id="frm" name="frm" method="post">
             <input type="hidden" name="bid" id="bid" value="${boardPage.bid}" />
             <div>
                 <label for="contents"></label>
                 <input type="text" id="contents" name="contents" size="30" placeholder="댓글을 작성하세요." />
-                <button type="submit" class="btn btn-outline-primary btn-sm" id="addComment" name="addComment">댓글 추가</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm" onclick="addComment()" id="addComment" name="addComment">댓글 추가</button>
             </div>
         </form>
     </div>
 </div>
 
 <script type="text/javascript">
+    const bid = ${boardPage.bid}
+
     document.getElementById('btnPrevious').onclick = function() {
         location.href = "/board/list"
     };
 
     document.getElementById('btnUpdate').onclick = function() {
-        location.href = "/board/updatePage?bid=" + "${boardPage.bid}";
+        location.href = "/board/updatePage?bid=" + bid;
     };
 
     document.getElementById('btnDelete').onclick = function() {
-        let path = "/board/delete?bid=" + ${boardPage.bid};
+        let path = "/board/delete?bid=" + bid;
         if(confirm("삭제하시겠습니까?")){
             location.href = path;
         }
         return false;
     };
 
+    $(function() {
+        showCommentList(bid);
+    })
+
+    function addComment() {
+        $.ajax({
+            url : "/board/addComment",
+            type : "POST",
+            data : $('#frm').serialize(),
+            success : function(data) {
+                if(data === true){
+                    // showCommentList(bid);
+                    location.href = "/board/page?bid=" + bid;
+                }
+            },
+            error : function() {
+                alert("댓글 추가 실패");
+            }
+        })
+    }
+
     function deleteComment(cid) {
         let msg = confirm("댓글을 삭제합니다.");
         if(msg === true){
-            location.href = "/board/deleteComment?cid=" + cid;
+            $.ajax({
+                url : "/board/deleteComment?cid=" + cid,
+                type : "GET",
+                success : function() {
+                    showCommentList(bid);
+                },
+                error : function() {
+                    alert("댓글 삭제 실패");
+                }
+            });
         }
         return false;
     }
+
+    // function showCommentList(bid){
+    //     $.ajax({
+    //         url : "/board/showCommentList?bid=" + bid,
+    //         type : "GET",
+    //         data : ('#frm').serialize(),
+    //         contentType : "application/json;",
+    //         dataType : "json",
+    //         success : function(data){
+    //             let html = ``;
+    //             $(data).each(function(){
+    //                 html += '<tr>';
+    //                 html += '<td>'+  +'</td>';
+    //                 html += '<td>'+  +'</td>';
+    //                 html += '<td><a href=# id="deleteComment" onclick="deleteComment('+  +')">삭제</a></td>';
+    //                 html += '</tr>';
+    //             });
+    //             $("#showCommentList").html(html);
+    //         }
+    //     });
+    // }
 </script>
 </body>
 </html>

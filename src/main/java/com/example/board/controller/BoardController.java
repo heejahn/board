@@ -7,10 +7,7 @@ import com.example.board.domain.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -53,21 +50,31 @@ public class BoardController {
        return "/board/page";
     }
 
-    @RequestMapping("addComment")
-    public String addComment(CommentsDto commentsDto, RedirectAttributes rttr) {
+    @ResponseBody
+    @GetMapping("showCommentList")
+    public Model showCommentList(@RequestParam("bid") Long bid, Model model) {
 
-        commentsService.addNewComment(commentsDto);
-        rttr.addFlashAttribute("msg", "added");
+        model.addAttribute("commentList", commentsService.selectAllComments(bid));
 
-        return "redirect:/board/list";
+        return model;
     }
 
+    @ResponseBody
+    @RequestMapping("addComment")
+    public String addComment(CommentsDto commentsDto) {
+
+        commentsService.addNewComment(commentsDto);
+
+        return "success";
+    }
+
+    @ResponseBody
     @GetMapping("deleteComment")
     public String deleteComment(@RequestParam("cid") Long cid) {
 
         commentsService.deleteCurrentComment(cid);
 
-        return "redirect:/board/list";
+        return "success";
     }
 
 
@@ -92,7 +99,7 @@ public class BoardController {
         return "/board/updatePage";
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @PostMapping("update")
     public String update(BoardDto boardDto, RedirectAttributes rttr) {
 
         boardService.updateCurrentPage(boardDto);
@@ -101,7 +108,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @GetMapping("delete")
     public String delete(@RequestParam("bid") Long bid) {
 
         commentsService.deleteCurrentPageComments(bid);
