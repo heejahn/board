@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #FAFAFA;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding-bottom: 60px;
+}
+
+h5 a {
+    color: #6CC6F0;
+    font-size: 1.4em;
+}
+
+footer {
+    padding: 1rem 0;
+    background-color: white;
+    flex-shrink : 0;
+}
