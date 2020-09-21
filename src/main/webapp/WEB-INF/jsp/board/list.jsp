@@ -73,8 +73,8 @@
                 </ul>
             </div>
         </div>
-        <jsp:include page="/WEB-INF/jsp/common_include/common_footer.jsp" />
     </main>
+    <jsp:include page="/WEB-INF/jsp/common_include/common_footer.jsp" />
 
     <script type="text/javascript">
         document.getElementById('btnWrite').onclick = function() {
