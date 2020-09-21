@@ -42,34 +42,29 @@ public class BoardController {
 
         boardService.updateNumberOfHits(bid);
 
-        List<CommentsDto> commentsDtoList = commentsService.selectAllComments(bid);
-
         model.addAttribute("boardPage", boardService.selectChosenPage(bid));
-        model.addAttribute("commentPage", commentsDtoList);
+        model.addAttribute("commentsDto", new CommentsDto());
 
        return "/board/page";
     }
 
     @ResponseBody
-    @GetMapping("showCommentList")
-    public Model showCommentList(@RequestParam("bid") Long bid, Model model) {
+    @RequestMapping("showCommentList")
+    public List<CommentsDto> showCommentList(@RequestParam("bid") Long bid) {
 
-        model.addAttribute("commentList", commentsService.selectAllComments(bid));
-
-        return model;
+        return commentsService.selectAllComments(bid);
     }
 
-    @ResponseBody
     @RequestMapping("addComment")
     public String addComment(CommentsDto commentsDto) {
 
         commentsService.addNewComment(commentsDto);
 
-        return "success";
+        return "redirect:/board/list";
     }
 
     @ResponseBody
-    @GetMapping("deleteComment")
+    @RequestMapping("deleteComment")
     public String deleteComment(@RequestParam("cid") Long cid) {
 
         commentsService.deleteCurrentComment(cid);

@@ -1,13 +1,17 @@
 package com.example.board.domain.dto;
 
-import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 public class CommentsDto {
 
     private Long bid;
     private Long cid;
     private String contents;
-    private Date commentRegDt;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime commentRegDt;
 
     public Long getBid() {
         return bid;
@@ -33,11 +37,11 @@ public class CommentsDto {
         this.contents = contents;
     }
 
-    public Date getCommentRegDt() {
+    public LocalDateTime getCommentRegDt() {
         return commentRegDt;
     }
 
-    public void setCommentRegDt(Date commentRegDt) {
+    public void setCommentRegDt(LocalDateTime commentRegDt) {
         this.commentRegDt = commentRegDt;
     }
 

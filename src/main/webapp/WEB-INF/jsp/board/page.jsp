@@ -56,144 +56,142 @@
 </style>
 
 <body>
-    <jsp:include page="/WEB-INF/jsp/common_include/common_header.jsp" />
-    <div class="nav-scroller flex-column p-3 mb-3 bg-white border-bottom shadow-sm">
-        <div class="container-sm d-flex">
-            <h4 class="navbar-brand mr-auto mr-lg-0">게시판 세부 페이지</h4>
-        </div>
+<jsp:include page="/WEB-INF/jsp/common_include/common_header.jsp" />
+<div class="nav-scroller flex-column p-3 mb-3 bg-white border-bottom shadow-sm">
+    <div class="container-sm d-flex">
+        <h4 class="navbar-brand mr-auto mr-lg-0">게시판 세부 페이지</h4>
     </div>
-    <jsp:include page="/WEB-INF/jsp/common_include/common_header.jsp" />
-    <main role="main">
-        <div class="container">
-            <div class="page border-bottom shadow-sm">
-                <h3 class="pageTitle">${boardPage.title}</h3>
-                <div class="pageLabel">
+</div>
+<main role="main">
+    <div class="container">
+        <div class="page border-bottom shadow-sm">
+            <h3 class="pageTitle">${boardPage.title}</h3>
+            <div class="pageLabel">
                     <span>
                         <label>작성일</label>
                         <label class="label"><fmt:formatDate value="${boardPage.regDt}" pattern="yyyy.MM.dd" /></label>
                     </span>
-                    <span>
+                <span>
                         <label>조회수</label>
                         <label class="label">${boardPage.readCount}</label>
                     </span>
-                </div>
-                <hr class="mb-1"/>
-                <div class="textarea">
-                    <label for="pageContent"></label>
-                    <textarea id="pageContent" name="pageContent" rows="5" readonly="readonly">${boardPage.contents}</textarea>
-                </div>
-                <div class="threeButtons text-center">
-                    <button type="button" class="btn btn-outline-primary" id="btnUpdate">수정</button>
-                    <button type="button" class="btn btn-outline-primary" id="btnDelete">삭제</button>
-                    <button type="button" class="btn btn-outline-primary" id="btnPrevious">이전으로</button>
-                </div>
             </div>
-            <hr class="mb-4"/>
-            <div class="comments border-bottom shadow-sm">
-                <form role="form" id="frm" name="frm" method="post">
-                    <input type="hidden" name="bid" id="bid" value="${boardPage.bid}" />
-                    <div class="writeComment">
-                        <label for="contents"></label>
-                        <input type="text" id="contents" name="contents" size="80" placeholder="댓글을 작성하세요." />
-                        <button type="submit" class="btn btn btn-light btn-sm" onclick="addComment()" id="addComment" name="addComment">댓글 추가</button>
-                    </div>
-                </form>
-                <hr class="mb-4"/>
-                <table class="table table-sm table-borderless" id="commentTable">
-                    <tbody>
-                    <%--<div id="showCommentList"></div>--%>
-                    <c:forEach var="page" items="${commentPage}">
-                        <tr>
-                            <td>${page.contents}</td>
-                            <td style="color: #95999c"><fmt:formatDate value="${page.commentRegDt}" pattern="yyyy.MM.dd" /></td>
-                            <td><a href=# id="deleteComment" onclick="deleteComment(${page.cid})">삭제</a></td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+            <hr class="mb-1"/>
+            <div class="textarea">
+                <label for="pageContent"></label>
+                <textarea id="pageContent" name="pageContent" rows="5" readonly="readonly">${boardPage.contents}</textarea>
+            </div>
+            <div class="threeButtons text-center">
+                <button type="button" class="btn btn-outline-primary" id="btnUpdate">수정</button>
+                <button type="button" class="btn btn-outline-primary" id="btnDelete">삭제</button>
+                <button type="button" class="btn btn-outline-primary" id="btnPrevious">이전으로</button>
             </div>
         </div>
-    </main>
-    <jsp:include page="/WEB-INF/jsp/common_include/common_footer.jsp" />
+        <hr class="mb-4"/>
+        <div class="comments border-bottom shadow-sm">
+            <form role="form" id="frm" name="frm" action="${pageContext.request.contextPath}/board/addComment" method="post">
+                <input type="hidden" name="bid" id="bid" value="${boardPage.bid}" />
+                <div class="writeComment">
+                    <label for="contents"></label>
+                    <input type="text" id="contents" name="contents" size="80" placeholder="댓글을 작성하세요." />
+                    <button type="submit" class="btn btn btn-light btn-sm" id="addComment" name="addComment">댓글 추가</button>
+                </div>
+            </form>
+            <hr class="mb-4"/>
+            <div id="showCommentList"></div>
+        </div>
+    </div>
+</main>
+<jsp:include page="/WEB-INF/jsp/common_include/common_footer.jsp" />
 
-    <script type="text/javascript">
-        const bid = ${boardPage.bid}
+<script type="text/javascript">
+    const bid = ${boardPage.bid}
 
         document.getElementById('btnPrevious').onclick = function() {
             history.back();
         };
 
-        document.getElementById('btnUpdate').onclick = function() {
-            location.href = "/board/updatePage?bid=" + bid;
-        };
+    document.getElementById('btnUpdate').onclick = function() {
+        location.href = "/board/updatePage?bid=" + bid;
+    };
 
-        document.getElementById('btnDelete').onclick = function() {
-            let path = "/board/delete?bid=" + bid;
-            if(confirm("삭제하시겠습니까?")){
-                location.href = path;
+    document.getElementById('btnDelete').onclick = function() {
+        let path = "/board/delete?bid=" + bid;
+        if(confirm("삭제하시겠습니까?")){
+            location.href = path;
+        }
+        return false;
+    };
+
+    $(function() {
+        showCommentList();
+    })
+
+    function showCommentList(){
+        let appendList = $('#showCommentList');
+
+        $.ajax({
+            url : '/board/showCommentList',
+            type : "GET",
+            data : {"bid" : "${boardPage.bid}"},
+            contentType : "application/json;",
+            dataType : "json",
+            success : function(result){
+                appendList.append('<table class="table table-sm table-borderless" id="commentTable"><tbody>');
+
+                if(result.length > 0) {
+                    $(result).each(function() {
+                        let html =
+                            '<tr>' +
+                                '<td>'+ this.contents +'</td>' +
+                                '<td style="color: #95999c">' + this.commentRegDt.year + "/" + this.commentRegDt.monthValue + "/" + this.commentRegDt.dayOfMonth + '</td>' +
+                                '<td><a href=# id="deleteComment" onclick="deleteComment('+ this.cid +')">삭제</a></td>' +
+                            '</tr>';
+                        appendList.append(html);
+                    });
+                } else {
+                    appendList.append('<td style="color: #95999c">등록된 댓글이 없습니다.</td>');
+                }
+                appendList.append("</tbody></table>");
+                console.log(appendList);
             }
-            return false;
-        };
+        });
+    }
 
-        // $(function() {
-        //     showCommentList(bid);
-        // })
-
-        function addComment() {
+    function deleteComment(cid) {
+        let msg = confirm("댓글을 삭제합니다.");
+        if(msg === true){
             $.ajax({
-                url : "/board/addComment",
-                type : "POST",
-                data : $('#frm').serialize(),
-                success : function(data) {
-                    if(data === true){
-                        // showCommentList(bid);
-                        location.href = "/board/page?bid=" + bid;
-                    }
+                url : "/board/deleteComment?cid=" + cid,
+                type : "GET",
+                success : function() {
+                    showCommentList();
                 },
                 error : function() {
-                    alert("댓글 추가 실패");
+                    alert("댓글 삭제 실패");
                 }
-            })
+            });
         }
+        return false;
+    }
 
-        function deleteComment(cid) {
-            let msg = confirm("댓글을 삭제합니다.");
-            if(msg === true){
-                $.ajax({
-                    url : "/board/deleteComment?cid=" + cid,
-                    type : "GET",
-                    success : function() {
-                        // showCommentList(bid);
-                        location.href = "/board/page?bid=" + bid;
-                    },
-                    error : function() {
-                        alert("댓글 삭제 실패");
-                    }
-                });
-            }
-            return false;
-        }
+    <%--function addComment() {--%>
+    <%--    let url = "${pageContext.request.contextPath}/board/addComment";--%>
+    <%--    $.ajax({--%>
+    <%--        url : url,--%>
+    <%--        type : "POST",--%>
+    <%--        data : $('#frm').serialize(),--%>
+    <%--        success : function() {--%>
+    <%--                showCommentList();--%>
+    <%--                // location.href = "/board/list";--%>
+    <%--        },--%>
+    <%--        error : function() {--%>
+    <%--            alert("댓글 추가 실패");--%>
+    <%--        }--%>
+    <%--    })--%>
+    <%--}--%>
 
-        // function showCommentList(bid){
-        //     $.ajax({
-        //         url : "/board/showCommentList?bid=" + bid,
-        //         type : "GET",
-        //         data : ('#frm').serialize(),
-        //         contentType : "application/json;",
-        //         dataType : "json",
-        //         success : function(data){
-        //             let html = ``;
-        //             $(data).each(function(){
-        //                 html += '<tr>';
-        //                 html += '<td>'+  +'</td>';
-        //                 html += '<td>'+  +'</td>';
-        //                 html += '<td><a href=# id="deleteComment" onclick="deleteComment('+  +')">삭제</a></td>';
-        //                 html += '</tr>';
-        //             });
-        //             $("#showCommentList").html(html);
-        //         }
-        //     });
-        // }
-    </script>
+
+</script>
 </body>
 </html>

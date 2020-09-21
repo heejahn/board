@@ -5,6 +5,7 @@
 
     <select id="selectAllComments" parameterType="long" resultType="com.example.board.domain.dto.CommentsDto">
 SELECT
+      b.bid,
       b.cid,
       b.contents,
       b.reg_dt as commentRegDt

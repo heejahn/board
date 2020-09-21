@@ -45,7 +45,8 @@ VALUES (
     <update id="updateCurrentPage">
 UPDATE
 	   board a
-   SET a.contents = #{contents},
+   SET a.title = #{title},
+       a.contents = #{contents},
        a.reg_dt = NOW()
  WHERE a.bid = #{bid};
     </update>

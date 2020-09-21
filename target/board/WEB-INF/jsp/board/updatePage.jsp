@@ -46,12 +46,12 @@
                 <form role="form" action="${pageContext.request.contextPath}/board/update" method="post" id="frm" name="frm">
                     <input type="hidden" id="bid" name="bid" value="${updatePage.bid}" />
                         <div class="form-group">
-                            <label for="title">제목 (변경 불가)</label>
-                            <input type="text" class="form-control" id="title" name="title" readonly="readonly" value="${updatePage.title}">
+                            <label for="title">제목</label>
+                            <input type="text" class="form-control" id="title" name="title" value="${updatePage.title}">
                         </div>
                     <div class="form-group">
                         <label for="contents">내용</label>
-                        <textarea class="form-control" id="contents" name="contents" rows="4" placeholder="변경할 내용으로 적어주세요."></textarea>
+                        <textarea class="form-control" id="contents" name="contents" rows="4">${updatePage.contents}</textarea>
                     </div>
                     <button class="btn btn-outline-primary" type="submit" id="submit">제출</button>
                 </form>
