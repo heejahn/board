@@ -26,6 +26,11 @@
         padding: 3rem 0;
         flex : 1 0 auto;
     }
+
+    .pageColumn {
+        margin-bottom: 150px;
+    }
+
 </style>
 
 <body>
@@ -63,7 +68,7 @@
                 </table>
             </div>
 
-            <div class="text-center">
+            <div class="pageColumn text-center">
                 <ul class="pagination justify-content-center">
                     <li class="page-item"><a class="page-link" href="#">이전</a></li>
                     <li class="page-item"><a class="page-link" href="#">1</a></li>

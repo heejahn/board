@@ -4,12 +4,11 @@ import com.example.board.domain.dto.BoardDto;
 import com.example.board.domain.dto.CommentsDto;
 import com.example.board.domain.service.BoardService;
 import com.example.board.domain.service.CommentsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -20,13 +19,13 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentsService commentsService;
 
-    @Autowired
     public BoardController(BoardService boardService, CommentsService commentsService) {
         this.boardService = boardService;
         this.commentsService = commentsService;
     }
 
-    @RequestMapping("list")
+    // Board-related
+    @GetMapping("list")
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("board/list");
 
@@ -48,37 +47,12 @@ public class BoardController {
        return "/board/page";
     }
 
-    @ResponseBody
-    @RequestMapping("showCommentList")
-    public List<CommentsDto> showCommentList(@RequestParam("bid") Long bid) {
-
-        return commentsService.selectAllComments(bid);
-    }
-
-    @RequestMapping("addComment")
-    public String addComment(CommentsDto commentsDto) {
-
-        commentsService.addNewComment(commentsDto);
-
-        return "redirect:/board/list";
-    }
-
-    @ResponseBody
-    @RequestMapping("deleteComment")
-    public String deleteComment(@RequestParam("cid") Long cid) {
-
-        commentsService.deleteCurrentComment(cid);
-
-        return "success";
-    }
-
-
     @GetMapping("write")
     public void write() {
 
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @PostMapping("register")
     public String register(BoardDto boardDto) {
 
         boardService.registerNewPage(boardDto);
@@ -95,14 +69,14 @@ public class BoardController {
     }
 
     @PostMapping("update")
-    public String update(BoardDto boardDto, RedirectAttributes rttr) {
+    public String update(BoardDto boardDto) {
 
         boardService.updateCurrentPage(boardDto);
-        rttr.addFlashAttribute("msg", "updated");
 
         return "redirect:/board/list";
     }
 
+    @Transactional
     @GetMapping("delete")
     public String delete(@RequestParam("bid") Long bid) {
 
@@ -110,6 +84,31 @@ public class BoardController {
         boardService.deleteCurrentPage(bid);
 
         return "redirect:/board/list";
+    }
+
+    // Comment-related
+    @ResponseBody
+    @GetMapping("showCommentList")
+    public List<CommentsDto> showCommentList(@RequestParam("bid") Long bid) {
+
+        return commentsService.selectAllComments(bid);
+    }
+
+    @PostMapping("addComment")
+    public String addComment(CommentsDto commentsDto) {
+
+        commentsService.addNewComment(commentsDto);
+
+        return "redirect:/board/list";
+    }
+
+    @ResponseBody
+    @GetMapping("deleteComment")
+    public String deleteComment(@RequestParam("cid") Long cid) {
+
+        commentsService.deleteCurrentComment(cid);
+
+        return "success";
     }
 
 }
