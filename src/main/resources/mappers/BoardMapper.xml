@@ -65,4 +65,13 @@ DELETE
   FROM board
  WHERE bid = #{bid};
     </delete>
+
+
+    <select id="countNumOfBoard" resultType="com.example.board.domain.dto.PagingDto">
+SELECT
+ COUNT (*)
+  FROM board;
+    </select>
+
+    
 </mapper>

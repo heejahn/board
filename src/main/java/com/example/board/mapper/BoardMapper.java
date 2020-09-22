@@ -18,4 +18,6 @@ public interface BoardMapper {
 
     void deleteCurrentPage(Long bid);
 
+    int countNumOfBoard();
+
 }

@@ -1,6 +1,7 @@
 package com.example.board.domain.service;
 
 import com.example.board.domain.dto.BoardDto;
+import com.example.board.domain.dto.PagingDto;
 import com.example.board.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,8 @@ public class BoardService {
     public void updateNumberOfHits(Long bid) { boardMapper.updateNumberOfHits(bid); }
 
     public void deleteCurrentPage(Long bid) { boardMapper.deleteCurrentPage(bid); }
+
+    // Paging
+    public int countNumOfBoard() { return boardMapper.countNumOfBoard(); }
 
 }

@@ -24,7 +24,7 @@ public class BoardController {
         this.commentsService = commentsService;
     }
 
-    // Board-related
+    // Board
     @GetMapping("list")
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("board/list");
@@ -86,7 +86,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    // Comment-related
+    // Comment
     @ResponseBody
     @GetMapping("showCommentList")
     public List<CommentsDto> showCommentList(@RequestParam("bid") Long bid) {
@@ -110,5 +110,7 @@ public class BoardController {
 
         return "success";
     }
+
+    // Paging
 
 }
