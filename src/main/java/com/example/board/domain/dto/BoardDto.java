@@ -10,14 +10,6 @@ public class BoardDto {
     private Date regDt;
     private Long readCount;
 
-    public BoardDto(Long bid, String title, String contents, Date regDt, Long readCount) {
-        this.bid = bid;
-        this.title = title;
-        this.contents = contents;
-        this.regDt = regDt;
-        this.readCount = readCount;
-    }
-
     public Long getBid() {
         return bid;
     }
@@ -61,12 +53,11 @@ public class BoardDto {
     @Override
     public String toString() {
         return "BoardDto{" +
-                "bid=" + bid +
+                ", bid=" + bid +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", regDt=" + regDt +
                 ", readCount=" + readCount +
                 '}';
     }
-
 }

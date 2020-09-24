@@ -5,15 +5,22 @@
 
     <select id="selectAllBoardList" resultType="com.example.board.domain.dto.BoardDto">
 SELECT
-       a.bid,
+       ROW_NUMBER() OVER() AS rn,
+	   a.bid,
        a.title,
        a.contents,
        a.reg_dt as regDt,
-       a.read_count as readCount
+   	   a.read_count
   FROM board a
- ORDER BY a.bid DESC
+ORDER BY a.bid
+LIMIT #{offset}, #{numPerPage};
     </select>
 
+    <select id="countNumOfBoard" resultType="int">
+SELECT
+ COUNT (*)
+  FROM board;
+    </select>
 
     <select id="selectChosenPage" resultType="com.example.board.domain.dto.BoardDto">
 SELECT
@@ -66,12 +73,4 @@ DELETE
  WHERE bid = #{bid};
     </delete>
 
-
-    <select id="countNumOfBoard" resultType="com.example.board.domain.dto.PagingDto">
-SELECT
- COUNT (*)
-  FROM board;
-    </select>
-
-    
 </mapper>

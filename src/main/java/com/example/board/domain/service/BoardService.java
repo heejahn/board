@@ -18,8 +18,8 @@ public class BoardService {
         this.boardMapper = boardMapper;
     } // 생성자로 BoardMapper 주입
 
-    public List<BoardDto> selectAllBoardList() {
-        return boardMapper.selectAllBoardList();
+    public List<BoardDto> selectAllBoardList(PagingDto pagingDto) {
+        return boardMapper.selectAllBoardList(pagingDto);
     }
 
     public BoardDto selectChosenPage(Long bid) { return boardMapper.selectChosenPage(bid); }
@@ -32,7 +32,6 @@ public class BoardService {
 
     public void deleteCurrentPage(Long bid) { boardMapper.deleteCurrentPage(bid); }
 
-    // Paging
     public int countNumOfBoard() { return boardMapper.countNumOfBoard(); }
 
 }

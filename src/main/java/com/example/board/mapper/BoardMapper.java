@@ -1,12 +1,13 @@
 package com.example.board.mapper;
 
 import com.example.board.domain.dto.BoardDto;
+import com.example.board.domain.dto.PagingDto;
 
 import java.util.List;
 
 public interface BoardMapper {
 
-    List<BoardDto> selectAllBoardList();
+    List<BoardDto> selectAllBoardList(PagingDto pagingDto);
 
     BoardDto selectChosenPage(Long bid);
 

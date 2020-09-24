@@ -27,7 +27,7 @@
         flex : 1 0 auto;
     }
 
-    .pageColumn {
+    .paging {
         margin-bottom: 150px;
     }
 
@@ -43,6 +43,13 @@
     <main role="main">
         <div class="container">
             <div class="board">
+                <div>
+                    <select id="numPerPage" name="selected" onchange="numChoice()">
+                        <option value="5" <c:if test="${paging.numPerPage == 5}">selected</c:if>>5줄</option>
+                        <option value="10" <c:if test="${paging.numPerPage == 10}">selected</c:if>>10줄</option>
+                        <option></option>
+                    </select>
+                </div>
                 <table class="table table-hover">
                     <thead class="thead-light">
                     <tr>
@@ -68,15 +75,34 @@
                 </table>
             </div>
 
-            <div class="pageColumn text-center">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
-                </ul>
+            <div class = "paging" style="text-align: center">
+                <c:if test="${paging.startPage != 1}" >
+                    <a href="${pageContext.request.contextPath}/board/list?currentPage=${paging.startPage-1}&numPerPage="${paging.numPerPage}">&lt;</a>
+                </c:if>
+                <c:forEach var="page" begin="${paging.startPage}" end="${paging.lastPage}">
+                    <c:choose>
+                        <c:when test="${page == paging.currentPage}">
+                            <b>${page }</b>
+                        </c:when>
+                        <c:when test="${page != paging.currentPage}">
+                            <a href="${pageContext.request.contextPath}/board/list?currentPage=${page}&numPerPage="${paging.numPerPage}">${page }</a>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+                <c:if test="${paging.lastPage != paging.maxPage}">
+                    <a href="${pageContext.request.contextPath}/board/list?currentPage=${paging.lastPage+1}&numPerPage="${paging.numPerPage}">&gt;</a>
+                </c:if>
             </div>
+
+<%--            <div class="pageColumn text-center">--%>
+<%--                <ul class="pagination justify-content-center">--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">이전</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">다음</a></li>--%>
+<%--                </ul>--%>
+<%--            </div>--%>
         </div>
     </main>
     <jsp:include page="/WEB-INF/jsp/common_include/common_footer.jsp" />
@@ -85,6 +111,11 @@
         document.getElementById('btnWrite').onclick = function() {
             location.href = "/board/write";
         };
+
+        function numChoice() {
+            let selected = document.getElementById('#numPerPage').value();
+            location.href = "/board/list?currentPage=${paging.currentPage}&numPerPage="+selected;
+        }
     </script>
 </body>
 </html>

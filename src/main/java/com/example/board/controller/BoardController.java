@@ -2,13 +2,13 @@ package com.example.board.controller;
 
 import com.example.board.domain.dto.BoardDto;
 import com.example.board.domain.dto.CommentsDto;
+import com.example.board.domain.dto.PagingDto;
 import com.example.board.domain.service.BoardService;
 import com.example.board.domain.service.CommentsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -26,14 +26,32 @@ public class BoardController {
 
     // Board
     @GetMapping("list")
-    public ModelAndView list() {
-        ModelAndView modelAndView = new ModelAndView("board/list");
+    public String list(Model model,
+            @RequestParam(value = "currentPage", required = false) String currentPage,
+            @RequestParam(value = "numPerPage", required = false) String numPerPage) {
 
-        List<BoardDto> boardDtoList = boardService.selectAllBoardList();
+        // 페이징
+        if(currentPage == null && numPerPage == null) {
+            currentPage = "1";
+            numPerPage = "5";
 
-        modelAndView.addObject("boardList", boardDtoList);
+        } else if(currentPage == null) {
+            currentPage = "1";
 
-        return modelAndView;
+        } else if(numPerPage == null) {
+            numPerPage = "5";
+        }
+
+        int totalNum = boardService.countNumOfBoard();
+
+        PagingDto pagingDto = new PagingDto(totalNum, Integer.parseInt(currentPage), Integer.parseInt(numPerPage));
+
+        List<BoardDto> boardDtoList = boardService.selectAllBoardList(pagingDto);
+
+        model.addAttribute("boardList", boardDtoList);
+        model.addAttribute("paging", pagingDto);
+
+        return "board/list";
     }
 
     @GetMapping("page")
